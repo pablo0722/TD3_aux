@@ -1,8 +1,9 @@
 # Makefile para TD3 UTN FRBA
-# Version: 2.0
+# Version: 3.0
 # Año: 2018
 
-# NOTA: los paths relativos deben especificarse SIN el "./"
+# NOTA: Los paths relativos deben especificarse SIN el "./"
+#		Los archivos assembler deben tener extension .asm 
 
 
 
@@ -43,7 +44,8 @@ OUTPUT_NAME = bios
 
 # Flags del compilador
 # "-felf32": Formato de salida elf 32 bits
-CFLAGS = -felf32 -Wall
+CFLAGS = -Wall
+#CFLAGS = -felf32 -Wall
 
 # Flags del linker
 # "-z max-page-size=0x01000": Tamaño maximo de pagina 
@@ -128,7 +130,7 @@ endef
 # ****************************** Reglas ****************************** #
 # ******************************************************************** #
 
-all: $(OUTPUT_ELF) $(OUTPUT_BIN) compilar
+all: clean compilar
 	$(COPY_BIOS)
 	@echo	''
 	@echo	'Ejecutando bochs'
@@ -139,11 +141,11 @@ $(OUTPUT_BIN): $(OBJS)
 	@echo	''
 	@echo	'-----> Linkeando' $^ 'a binario'
 
-	$(LINKER) $(LFLAGS) --oformat=binary $^ -o $@
+	#$(LINKER) $(LFLAGS) --oformat=binary $^ -o $@
 
 	@echo	''
 	@echo	'tamaño en bytes:'
-	ls -o --color=auto $(OUTPUT_BIN)
+	stat -c%s "$(OUTPUT_BIN)"
 
 $(OUTPUT_ELF): $(OBJS)
 	@echo	''
@@ -155,17 +157,17 @@ $(OUTPUT_ELF): $(OBJS)
 	@echo	''
 	@echo	'-----> Compilando fuente' $<
 
-	$(COMPILER) $(CFLAGS) $< -o $@ -l $(subst $(CARPETA_OBJ)/,$(CARPETA_LST)/,$(@:.o=.lst))
+	$(COMPILER) $(CFLAGS) $< -o $(OUTPUT_BIN) -l $(subst $(CARPETA_OBJ)/,$(CARPETA_LST)/,$(@:.o=.lst))
 
 
 .PHONY: compilar
-compilar: $(OUTPUT_ELF) $(OUTPUT_BIN)
+compilar: clean $(OUTPUT_BIN)
 	@echo	''
 	@echo	'-----> Generando listados de hexadecimales y ELFs'
 
 	hexdump -C $(OUTPUT_BIN) > ./$(CARPETA_TXT)/$(OUTPUT_NAME)_hexdump.txt
-	objdump $(ODFLAGS) $(OUTPUT_ELF) > ./$(CARPETA_TXT)/$(OUTPUT_NAME)_objdump.txt
-	readelf -a $(OUTPUT_ELF) > ./$(CARPETA_TXT)/$(OUTPUT_NAME)_readelf.txt
+	#objdump $(ODFLAGS) $(OUTPUT_ELF) > ./$(CARPETA_TXT)/$(OUTPUT_NAME)_objdump.txt
+	#readelf -a $(OUTPUT_ELF) > ./$(CARPETA_TXT)/$(OUTPUT_NAME)_readelf.txt
 
 	@echo	''
 	@echo	''
