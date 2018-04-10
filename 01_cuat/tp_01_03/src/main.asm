@@ -78,15 +78,28 @@ global _start
 
 ; void start16();
 _start16:
-	.LBF0:
+	.LFB0:
 
 		test EAX, 0x0 	; Verificar que el uP no este en fallo
 		jne _hlt		; Jump if Not Equal (salta si eax != 0)
 
 		xor EAX, EAX 	; EAX = 0
 		mov CR3, EAX 	;Invalidar TLB
+	.LFE0:
+	START16_LEN equ ($ - _start16)
 
-	.A20_begin:			; Habilita el A20 gate sin utilizacion del stack.
+
+
+
+
+
+
+
+
+
+; void A20_enable();
+_A20_enable:
+	.LBF0:			; Habilita el A20 gate sin utilizacion del stack.
 
 		;Deshabilita el teclado
 		mov EDI, .8042_kbrd_dis
@@ -132,18 +145,15 @@ _start16:
 		mov AL, KEYB_EN
 		out CTRL_PORT_8042, AL
 
-		mov EDI, .A20_end
+		mov EDI, .LFE0
 	.empty_8042_in:  
 		;      in al, CTRL_PORT_8042      ; Lee port de estado del 8042 hasta que el
 		;      test al, 00000010b         ; buffer de entrada este vacio
 		;      jne .empty_8042_in
 		jmp EDI
-
-	.A20_end:			; Habilita el A20 gate sin utilizacion del stack.
-
-		jmp _firmware_shadow
 	.LFE0:
-	START16_LEN equ ($ - _start16)
+	A20_ENABLE_LEN equ ($ - _A20_enable)
+
 
 
 
@@ -157,19 +167,42 @@ _start16:
 _firmware_shadow:
 	.LFB0:
 
+		; Inicializo SS y SP
 		; SS = 0xF000 - SP = 0xFFFF (apunta al final del 1er Mega de memoria RAM)
 		mov AX, 0x7000 		; No se puede copiar directamente a SS. Hay que hacerlo mediante un registro
 		mov SS, AX
 		mov SP, 0xFFFF
 
-		; LLamo a la funcion void *TD3_memcopy(void *destino, const void *origen, unsigned int num_bytes)
-		push dword	(CODE_END - _main) 	; unsigned int num_bytes
-		push dword 	_main 				; const void *origen
+		; Copio a la RAM (0x0000:0x00000000)
+		push dword	(CODE_END - _start16) 	; unsigned int num_bytes
+		push dword 	_start16 			; const void *origen
 		push dword	0x00000000 			; void *destino
+		mov 		AX, 0xF000
+		mov 		DS, AX 				; DS = 0;
+		xor 		AX, AX 				; DS = 0;
+		mov 		ES, AX 				; ES = 0;
 		call 		_TD3_memcopy		; void *TD3_memcopy(void *destino, const void *origen, unsigned int num_bytes)
 		add	 SP, 12						; Borro los 3 argumentos del STACK
 
-		jmp _main
+		; Comienzo a ejecutar desde esa ubicacion
+		jmp 0x0000:.LJE0
+	.LJE0:
+
+		; Copio a la RAM (0x0000:0x00000000)
+		push dword	(CODE_END - _start16) 	; unsigned int num_bytes
+		push dword 	_start16 			; const void *origen
+		push dword	0x00000000 			; void *destino
+		xor 		AX, AX
+		mov 		DS, AX 				; DS = 0;
+		mov 		AX, 0x0030			; DS = 0;
+		mov 		ES, AX 				; ES = 0;
+		call 		_TD3_memcopy		; void *TD3_memcopy(void *destino, const void *origen, unsigned int num_bytes)
+		add	 SP, 12						; Borro los 3 argumentos del STACK
+
+		; Establezco el STACK en 0x1FFF:B000
+		mov AX, 0x1FFF
+		mov SS, AX
+		mov SP, 0xB000
 	.LFE0:
 	FIRMWARE_SHADOW_LEN equ ($ - _firmware_shadow)
 
@@ -181,12 +214,14 @@ _firmware_shadow:
 
 
 
-
-; void main();
-_main:
-		jmp 0x12345678
-		jmp _hlt
-	MAIN_LEN equ ($ - _main)
+; void hlt();
+; Funcion de HALT!
+_hlt:
+	.LFB0:
+		hlt 
+		jmp .LFB0
+	.LFE0:
+	STOP_LEN equ ($ - _hlt)
 
 
 
@@ -210,10 +245,6 @@ _TD3_memcopy:
 		push ESI
 		push ECX
 	.LFB1:					; Comienza codigo
-		mov AX, 0xF000
-		mov DS, AX 			; DS = 0;
-		xor AX, AX 			; DS = 0;
-		mov ES, AX 			; ES = 0;
 							; [EBP]: antiguo EBP, [EBP+4]: antiguo IP (ocupa 2 bytes en call near), 
 							; [EBP+6]: primer argumento de la izquierda de la funcion, [EBP+10]: segundo argumento, etc
 							; [EBP-4]: primer variable local, [EBP-8]: segunda variable local, etc.
@@ -234,23 +265,6 @@ _TD3_memcopy:
 		ret 				; Return;
 	.LFE0:					; // Local Function End: etiqueta local, fin de funcion
 	TD3_MEMCOPY_LEN equ ($ - _TD3_memcopy)
-
-
-
-
-
-
-
-
-
-; void hlt();
-; Funcion de HALT!
-_hlt:
-	.LFB0:
-		hlt 
-		jmp .LFB0
-	.LFE0:
-	STOP_LEN equ ($ - _hlt)
 
 
 

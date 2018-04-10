@@ -91,7 +91,7 @@ _firmware_shadow:
 
 ; Funcion _main
 _main:
-		jmp 0xF000:0x0000
+		jmp 0x0000
 		jmp _stop
 	MAIN_LEN equ ($ - _main)
 
@@ -165,7 +165,7 @@ _start:					; comienza en posicion 0xFFFFFFF0
 		cli 
 		cld 
 
-		jmp 0xf000:_firmware_shadow 		; Salto relativo al comienzo de la ROM (mediante una etiqueta). 
+		jmp _firmware_shadow 		; Salto relativo al comienzo de la ROM (mediante una etiqueta). 
 	.LFE0:
 	START_LEN equ ($ - _start)
 

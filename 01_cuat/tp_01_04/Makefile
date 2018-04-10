@@ -19,7 +19,7 @@
 # ******************************************************************** #
 
 # Path donde el BOCHS irá a buscar el binario (así, una vez generado, copia el binario a ese path y se puede ejecutar el bochs directamente sin modificar nada)
-PATH_BIOS = /home/pablo/UTN/TD3/bochs
+#PATH_BIOS = 
 
 # Carpeta donde se encuentran los archivos fuente (.asm)
 CARPETA_SRC = src
@@ -38,6 +38,9 @@ CARPETA_OBJ = bin
 
 # Carpeta donde se desean generar los archivos de texto para control (.txt)
 CARPETA_TXT = bin
+
+# Carpeta donde se desean guardar los archivos de texto suplementarios (.txt)
+CARPETA_SUP = sup
 
 # Nombre del archivo binario generado
 OUTPUT_NAME = bios
@@ -111,12 +114,12 @@ define CREAR_ESTRUCTURA
 endef
 
 # Define una funcion para crear la estructura de carpetas
-define COPY_BIOS
-	@echo	''
-	@echo	'-----> Copiando bios al path del bochs'
-
-	cp $(OUTPUT_BIN) $(BIOS)
-endef
+#define COPY_BIOS
+#	@echo	''
+#	@echo	'-----> Copiando bios al path del bochs'
+#
+#	cp $(OUTPUT_BIN) $(BIOS)
+#endef
 
 
 
@@ -131,10 +134,9 @@ endef
 # ******************************************************************** #
 
 all: clean compilar
-	$(COPY_BIOS)
 	@echo	''
 	@echo	'Ejecutando bochs'
-	bochs -q
+	bochs -f ./$(CARPETA_SUP)/bochsrc.txt -q
 	rm *.ini
 
 $(OUTPUT_BIN): $(OBJS)
@@ -174,9 +176,9 @@ compilar: clean $(OUTPUT_BIN)
 	@echo	'LISTO! n_n'
 	@echo	''
 
-.PHONY: copyBios
-copyBios:
-	$(COPY_BIOS)
+#.PHONY: copyBios
+#copyBios:
+#	$(COPY_BIOS)
 
 
 .PHONY: crearEstructura
