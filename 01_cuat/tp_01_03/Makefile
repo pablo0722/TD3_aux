@@ -44,7 +44,7 @@ OUTPUT_NAME = bios
 
 # Flags del compilador
 # "-felf32": Formato de salida elf 32 bits
-CFLAGS = -Wall
+CFLAGS = -Iinc/ -Wall
 #CFLAGS = -felf32 -Wall
 
 # Flags del linker

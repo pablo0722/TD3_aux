@@ -91,6 +91,7 @@ _firmware_shadow:
 
 ; Funcion _main
 _main:
+		jmp 0xF000:0x0000
 		jmp _stop
 	MAIN_LEN equ ($ - _main)
 

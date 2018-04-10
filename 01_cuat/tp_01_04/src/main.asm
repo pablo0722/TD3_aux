@@ -184,7 +184,6 @@ _firmware_shadow:
 
 ; void main();
 _main:
-		jmp 0x12345678
 		jmp _hlt
 	MAIN_LEN equ ($ - _main)
 
