@@ -263,7 +263,7 @@ _TD3_memcopy:
 		mov	EDI,	EAX		; ES:DI = destino
 		mov	ESI,	[BP+10]	; DS:SI = origen
 		mov	ECX,	[BP+14]	; ECX = num_bytes;
-		repnz		movsb	; repnz: repite instruccion <ECX> veces
+		a32 repnz		movsb	; repnz: repite instruccion <ECX> veces
 							; movsb: [ES:EDI++] = [DS:ESI++]; // (incrementa despues)
 	.LFE1:					; Termina codigo
 		pop	ECX

@@ -174,7 +174,7 @@ _firmware_shadow:
 		mov SP, 0xFFFF
 
 		; Copio a la RAM (0x0000:0x00000000)
-		push dword	(CODE_END - _start16) 	; unsigned int num_bytes
+		push dword	(0x00010000) 	; unsigned int num_bytes
 		push dword 	_start16 			; const void *origen
 		push dword	0x00000000 			; void *destino
 		mov 		AX, 0xF000
@@ -252,7 +252,7 @@ _TD3_memcopy:
 		mov	EDI,	EAX		; ES:DI = destino
 		mov	ESI,	[BP+10]	; DS:SI = origen
 		mov	ECX,	[BP+14]	; ECX = num_bytes;
-		repnz		movsb	; repnz: repite instruccion <ECX> veces
+		a32 repnz		movsb	; repnz: repite instruccion <ECX> veces
 							; movsb: [ES:EDI++] = [DS:ESI++]; // (incrementa despues)
 	.LFE1:					; Termina codigo
 		pop	ECX
