@@ -1,0 +1,1 @@
+cmd_/home/pablo/Documentos/TD_III/r5051-Dangelo-Pablo-Rodrigo/02_cuat/Drivers/cind/built-in.o :=  rm -f /home/pablo/Documentos/TD_III/r5051-Dangelo-Pablo-Rodrigo/02_cuat/Drivers/cind/built-in.o; ar rcsD /home/pablo/Documentos/TD_III/r5051-Dangelo-Pablo-Rodrigo/02_cuat/Drivers/cind/built-in.o

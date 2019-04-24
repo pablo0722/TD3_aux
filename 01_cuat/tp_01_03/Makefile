@@ -1,5 +1,5 @@
 # Makefile para TD3 UTN FRBA
-# Version: 3.0
+# Version: 6.0
 # Año: 2018
 
 # NOTA: Los paths relativos deben especificarse SIN el "./"
@@ -24,6 +24,9 @@
 # Carpeta donde se encuentran los archivos fuente (.asm)
 CARPETA_SRC = src
 
+# Carpeta donde se encuentran los archivos cabecera (.h)
+CARPETA_INC = inc
+
 # Carpeta donde se desea generar el archivo binario (.bin)
 CARPETA_BIN = bin
 
@@ -45,15 +48,18 @@ CARPETA_SUP = sup
 # Nombre del archivo binario generado
 OUTPUT_NAME = bios
 
+# Lista de directorios
+DIRECTORIOS = src/ inc/ lib/ bin/ doc/ log/ sup/
+
 # Flags del compilador
 # "-felf32": Formato de salida elf 32 bits
-CFLAGS = -Iinc/ -Wall
+CFLAGS = -I$(CARPETA_INC)/ -Wall -felf32
 #CFLAGS = -felf32 -Wall
 
 # Flags del linker
 # "-z max-page-size=0x01000": Tamaño maximo de pagina 
 # "-m elf_i386": Emula un procesador i386
-LFLAGS = -z max-page-size=0x01000 -m elf_i386
+LFLAGS = -z max-page-size=0x01000 -m elf_i386 -T sup/linker_script.ld -e _init16 -Map bin/bios.map
 
 # Flags del objdump
 # "-C": Decodifica los nombres de símbolo
@@ -99,18 +105,15 @@ OBJS = $(subst $(CARPETA_SRC)/,$(CARPETA_OBJ)/,$(SRCS:.asm=.o))
 # Path y nombre del binadio generado
 BIOS = $(PATH_BIOS)/$(OUTPUT_NAME).bin
 
+# Lista de carpetas para crear si no existen
+DIRECTORY = $(sort $(DIRECTORIOS) $(dir $(OBJS)))
+
 # Define una funcion para crear la estructura de carpetas
 define CREAR_ESTRUCTURA
 	@echo	''
 	@echo	'-----> Creando estructura de carpetas'
 
-	mkdir -p ./bin
-	mkdir -p ./doc
-	mkdir -p ./inc
-	mkdir -p ./lib
-	mkdir -p ./src
-	mkdir -p ./sup
-	mkdir -p ./log
+	mkdir -p $(DIRECTORY)
 endef
 
 # Define una funcion para crear la estructura de carpetas
@@ -133,7 +136,7 @@ endef
 # ****************************** Reglas ****************************** #
 # ******************************************************************** #
 
-all: clean compilar
+all: crearEstructura clean compilar
 	@echo	''
 	@echo	'Ejecutando bochs'
 	bochs -f ./$(CARPETA_SUP)/bochsrc.txt -q
@@ -143,7 +146,7 @@ $(OUTPUT_BIN): $(OBJS)
 	@echo	''
 	@echo	'-----> Linkeando' $^ 'a binario'
 
-	#$(LINKER) $(LFLAGS) --oformat=binary $^ -o $@
+	$(LINKER) $(LFLAGS) --oformat=binary $^ -o $@
 
 	@echo	''
 	@echo	'tamaño en bytes:'
@@ -159,7 +162,7 @@ $(OUTPUT_ELF): $(OBJS)
 	@echo	''
 	@echo	'-----> Compilando fuente' $<
 
-	$(COMPILER) $(CFLAGS) $< -o $(OUTPUT_BIN) -l $(subst $(CARPETA_OBJ)/,$(CARPETA_LST)/,$(@:.o=.lst))
+	$(COMPILER) $(CFLAGS) $< -o $@ -l $(subst $(CARPETA_OBJ)/,$(CARPETA_LST)/,$(@:.o=.lst))
 
 
 .PHONY: compilar
@@ -182,7 +185,9 @@ compilar: clean $(OUTPUT_BIN)
 
 
 .PHONY: crearEstructura
-crearEstructura:
+crearEstructura: $(DIRECTORY)
+
+$(DIRECTORY):
 	$(CREAR_ESTRUCTURA)
 
 clean:

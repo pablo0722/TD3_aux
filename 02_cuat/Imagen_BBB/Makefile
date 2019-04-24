@@ -1,0 +1,1 @@
+CC = /home/pablo/Documentos/UTN/Materias/TD3/r5051-Dangelo-Pablo-Rodrigo/02_cuat/Imagen_BBB/arm-linux-gnueabihf-gcc

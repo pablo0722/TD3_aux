@@ -1,0 +1,77 @@
+.section name [, "flags"[, @type[,flag_specific_arguments]]]
+
+
+
+
+
+If the ‘--sectname-subst’ command-line option is provided, 
+the name argument may contain a substitution sequence. Only %S is supported at the moment, and substitutes the current section name. 
+
+
+
+
+
+The optional flags argument is a quoted string which may contain any combination of the following characters:
+
+a
+section is allocatable
+
+d
+section is a GNU_MBIND section
+
+e
+section is excluded from executable and shared library.
+
+w
+section is writable
+
+x
+section is executable
+
+M
+section is mergeable
+
+S
+section contains zero terminated strings
+
+G
+section is a member of a section group
+
+T
+section is used for thread-local-storage
+
+?
+section is a member of the previously-current section’s group, if any
+
+<number>
+a numeric value indicating the bits to be set in the ELF section header’s flags field. Note - if one or more of the alphabetic characters described above is also included in the flags field, their bit values will be ORed into the resulting value.
+
+<target specific>
+some targets extend this list with their own flag characters
+
+
+
+
+
+The optional type argument may contain one of the following constants:
+
+@progbits
+section contains data
+
+@nobits
+section does not contain data (i.e., section only occupies space)
+
+@note
+section contains data which is used by things other than the program
+
+
+Note - some sections, eg .text and .data are considered to be special and have fixed types. 
+Any attempt to declare them with a different type will generate an error from the assembler.
+
+
+
+
+
+If no flags are specified, the default flags depend upon the section name. 
+If the section name is not recognized, the default will be for the section to have none of the above flags: 
+it will not be allocated in memory, nor writable, nor executable. The section will contain data.

@@ -1,0 +1,7 @@
+127.0.0.1 conected
+time: 1
+Cierra cliente
+127.0.0.1 conected
+time: 0
+
+Cerrado correctamente

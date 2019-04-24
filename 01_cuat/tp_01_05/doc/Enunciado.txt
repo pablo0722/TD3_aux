@@ -1,0 +1,22 @@
+	En base al ejercicio anterior adecuarlo para que el mismo se ejecute exclusivamente en modo 
+protegido 32bits. 
+a) Crear una estructura GDT mínima con modelo de segmentación FLAT [3][4][5] y  
+b) En la zona denominada Núcleo solo debe copiarse código. 
+c) Definir  una  pila  dentro  del  segmento  de  datos  e  inicializar  el  par  de  registros  SS:ESP 
+[3][4]  adecuadamente.  Realice  la  definición  de  forma  dinámica  de  modo  que  pueda 
+modificarse su tamaño y ubicación de manera simple. 
+d) Plantee el ejercicio con el siguiente esquema de archivos: 
+Makefile o make.sh : comandos necesarios para construir el binario 
+bochs.cfg : configuración utilizada para el Bochs en cada ejercicio 
+init.s : solo el código necesario para inicializar al procesador en modo protegido y en 
+ejercicios posteriores la paginación. 
+main.s : funcionalidad solicitada en cada ejercicio 
+sys_tables.s : tablas de sistema. 
+ 
+El mapa de memoria propuesto  
+Sección							Dirección inicial
+Rutina de teclado					00000000h	
+Núcleo								00300000h
+pila 								1FFFB000h
+Secuencia inicialización ROM 		FFFFF000h
+Vector de reset 					FFFFFFF0h

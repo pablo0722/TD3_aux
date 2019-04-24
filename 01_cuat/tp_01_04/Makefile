@@ -133,7 +133,7 @@ endef
 # ****************************** Reglas ****************************** #
 # ******************************************************************** #
 
-all: clean compilar
+all: compilar
 	@echo	''
 	@echo	'Ejecutando bochs'
 	bochs -f ./$(CARPETA_SUP)/bochsrc.txt -q
@@ -163,7 +163,7 @@ $(OUTPUT_ELF): $(OBJS)
 
 
 .PHONY: compilar
-compilar: clean $(OUTPUT_BIN)
+compilar: $(OUTPUT_BIN)
 	@echo	''
 	@echo	'-----> Generando listados de hexadecimales y ELFs'
 

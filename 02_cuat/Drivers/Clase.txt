@@ -1,0 +1,71 @@
+/****************************************************************
+ *      PAGINA 141 de PPT "Clase23-2018-09-18"                  *
+ ****************************************************************/
+
+
+// Definir cola de lectura
+static DECLARE_WAIT_QUEUE_HEAD (td3_i2c_rx_q);
+
+ssize_t i2c_int_read(...)
+{
+    // Verifica que los punteros sean validos
+    access_ok(VERIFY_READ, addr, size);
+
+    // Condicion para despertar al proceso
+    int cond_wake_up_rx = 0;
+
+    // Proceso pasa a estado TASK_INTERRUPTIBLE
+    wait_event_interruptible (td3_i2c_rx_q, cond_wake_up_rx > 0);
+}
+
+irqreturn_t i2c_int_handler (int irq, void *dev_id, struct pt_regs *regs)
+{
+    *puntero_buffer_KernelSpace = ioread32 (register Address);
+    puntero_buffer_KernelSpace++;
+
+    if (puntero_buffer_KernelSpace == buffer_kernelspace_size)
+    {
+        // Condicion para despertar > 0
+        cond_wake_up_rx = 1;
+
+        // Proceso pasa a estado RUNNING
+        wake_up_interruptible (&td3_i2c_rx_q);
+    }
+
+    return IRQ_HANDLED;
+}
+
+
+
+
+
+/****************************************************************
+ *      PAGINA 14 de PPT "Clase24"                              *
+ ****************************************************************/
+
+ CACHE:
+ si asigno cache de 32KB, necesito 2^17 paginas (17 bits para dirigir) DRAM. 
+ como cachesi tengo 8 lineas por set, necesito 1024 ssets (10 bits para dirigir)
+
+
+
+
+Con un solo procesador es mejor usar copy back.
+Cuando se tiene multiprocesador, no es recomendable usar copy back; se
+     agrega el snooop bus + write throught buffered.
+     El Snoop bus esta conectado al address bus.
+     Si un procesador cambia el bus address y pone bit de write, el otro
+     procesador busca esa direccion en su cache, si la encuentra la inhibe.
+
+Se busca utilizar copy back, entonces se creo protocolo MESI.
+Si soy el unico procesador utilizando el bus, hago copy back, si no,
+hago write throught.
+MESI son 4 lineas que comunican el controlador de cache de
+todos los procesadores
+
+
+
+
+LIBROS:
+Computer Architecture Hardware Software - John Hennesy, David Patterson
+Computer Architecture quantitative Aproach - John Hennesy, David Patterson

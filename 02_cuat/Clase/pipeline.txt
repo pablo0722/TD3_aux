@@ -1,0 +1,39 @@
+pipeline
+	arquitectura que superpone la ejecucion de varias instrucciones
+	Instruction Level Paralelism (ILP)
+		Se divide en etapas
+			Opcode fetch
+			Decode
+			Operand fetch
+			Execute
+		Cantidad de etapas = profundidad del pipeline
+		el A8 tiene 13 etapas
+		El pipeline tarda en llegar al regimen de 1 CPI (ciclo por instruccion), tantos ciclos de clock como etapas tenga
+	Hazards (obstaculos)
+		Pipeline Stall: efecto ocaciopnado por un obstaculo
+		Obstaculos estructurales(falta de hardware):
+			Requiere mas de un clock para completarse una etapa
+			Ejemplos:
+				acceso concurrente a memoria:
+					cuando comparte el bus de instrucciones y de datos
+			Solucion:
+				Se desecha Von Newman. Se usa Harvard mejorada:
+					1 bus de datos + 1 bus de address
+					1 cache de instruccion + 1 cache de datos
+		
+		Obstaculo de datos
+			Cuando el resultado de una instruccion es el operando de la siguiente instruccion
+			Solucion:
+				Forwarding
+					Se latchea El resultado de la ALU a la entrada de la misma (se gana 1 ciclo)
+		
+		Obstaculo de control
+			branch (if, jump, call, int, etc)
+				puede ser "taken" (la condicion es true) o "untakken" (la condicion es false)
+				si es takken, hay un branch penalty
+			Solucion:
+				unidad de prediccion de salto
+				loop unrolling
+				
+				
+				

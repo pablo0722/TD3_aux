@@ -1,0 +1,19 @@
+En el bochs, la ROM es un archivo que debe estar alineado. Es decir, en nuestro ejemplo debe ser un archivo de exactamente 64KB.
+Para configurar el bochs hay que ejecutarlo y entrar a:
+3. Edit options
+7. Memory options
+1. Standard Options
+1. RAM size options
+Enter memory size (MB): 512
+Enter host memory size (MB): 640
+2. BIOS ROM options
+<ingresar path a la rom>
+ROM BIOS address: 0xffff0000
+BIOS options: none
+0. Return to previous menu
+0. Return to previous menu
+0. Return to previous menu
+4. Save options to...
+.bochsrc
+Overwrite it? yes
+6. Begin simulation

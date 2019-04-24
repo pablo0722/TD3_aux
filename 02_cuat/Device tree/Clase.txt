@@ -1,0 +1,73 @@
+Device driver:
+	codigo que se ejecuta en modo kernel
+	El driver se encarga del mecanismo, las capas superiores de la politica
+
+
+
+
+
+	Char devices:
+		Transmite caracteres
+		Ej:
+			UART,
+		Funciones:
+			write(), open(), close(), ioctl()
+
+	Block Devices:
+		Se accede a traves de bloques de memoria (usualmente 512B)
+
+	Network Devices:
+		Puede ser interfaz por HW o SW (loopback)
+		no tiene en cuenta el protocolo (TCP, UDP)
+		no usa read(), write()
+
+	Miscelaneous (bus/plataform) Devices:
+		PCI, USB, SCSI, I2C, SPI
+
+
+
+
+LKM (Linkeable Kernel Modules):
+	Al ejecutar un modulo, se mete en la memoria RAM,
+	    el modulo le dice al kernel las funciones que puede hacer,
+		y se queda esperando.
+	Los recursos solicitados DEBEN ser correctamente eliminados al
+	    momento de quitar el modulo.
+
+	Compilar un modulo:
+		sudo apt-get install linux-headers-`uname -r`
+
+	sudo insmod modulo.ko
+	sudo modprobe modulo.ko
+	sudo rmmod modulo.ko
+
+	# modprobe: chequea dependencias de otros modulos
+	# depmod: Genera las dependencias
+
+
+
+
+
+
+
+
+
+DEVICE TREE:
+	El kernel no contiene descripcion de hardware
+	La descripcion de hardware se encuentra en archivo binario llamado DEVICE TREE (DTB)
+	r2 apunta a DTB
+	El .dtb se pone en /boot/
+	El dts se compila con dtc
+
+
+
+
+
+http://androidxref.com/kernel_3.18/xref/arch/arm/boot/dts/
+
+
+Modificar etiqueta "compatible" (debe ser igual al del modulo de i2c).
+
+
+// Device Tree Compiler
+dtc -I xxx.dts -o xxx.dtb

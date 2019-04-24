@@ -1,0 +1,78 @@
+1.a-Indicar la necesidad de ORG ROM_START.
+Es para que el binario generado tenga las direcciones correspondientes sabiendo que se ubicará en la posición ROM_START.
+
+1.b-¿Que ocurre si no se establece?
+Puede traer problemas cuando se quiere referir a otra posición del código
+
+2.a-En TEST 00, cual es el segmento utilizado por di como base
+DS (Data segment)
+
+2.b-En la instruccion correspondiente a la linea 27, indicar la direccion
+2.b.i-Logica	0x0000:0xFFFF
+2.b.ii-Lineal	0x0000:0xFFFF
+2.b.iii-Fisica	0x0000FFFF
+
+2.c-Repetir el item anterior para la linea 35, indicando a que se debe el valor de di inferior al de la linea 27 pese a que se realizaron varios incrementos
+2.b.i-Logica	0x0000:0x0003
+2.b.ii-Lineal	0x0000:0x0003
+2.b.iii-Fisica	0x00000003
+'di' (16 bits) desborda y vuelve a arrancar de cero.
+
+2.d-Cual es la maxima direccion que se puede obtener con ds:di
+2.d.i-Logica	0xF000:0xFFFF
+2.d.ii-Lineal	0xF000:0xFFFF
+2.d.iii-Fisica	0x000FFFFF
+
+3.a-En TEST 01, cual es el segmento utilizado por di como base
+ES (Extra segment)
+
+3.b-En la instruccion correspondiente a la linea 46, indicar la direccion
+3.b.i-Logica	0x0000:0xFFFF
+3.b.ii-Lineal	0x0000:0xFFFF
+3.b.iii-Fisica	0x0000FFFF
+
+3.c-¿Difiere el maximo valor alcanzado por di entre el TEST 00 y el 01?. ¿Porque?
+Difiere entre 'di' y 'edi'. 'edi' no desborda.
+
+3.d-Es posible ejecutar la linea 50. 
+no. Al incrementar 'edi' no desborda y al intentar acceder se rompe en la linea 48.
+
+3.d.i-Indique que se observa mediante Bochs. 
+(Utilizar sreg e interpretar los atributos ocultos)
+En 'cs' se pone valid = 1 (antes estaba en 7)
+
+3.d.i-¿Que unidad de proteccion interviene?¿Que se esta comparando?
+interviene la unidad de segmentacion de memoria dentro de la MMU (Memory Managment Unit). Se esta comparando la direccion ds:edi con la base:limite-1 del segmento en la gdt
+Se produce un segmentation fault y entra en una interrupción no configurada.
+
+
+Comentar/deshabilitar el TEST 01
+
+4.a-Previo a ejecutar la instruccion de la linea 65 o32 lgdt  [cs:gdtr]
+4.a.i-¿Existe una GDT?. Si
+4.a.ii-¿Es utilizada? Existe pero está en modo "flat". Es como si no estuviera
+
+4.b-A posteriori de la ejecucion de la instruccion indicada anteriormente
+4.b.i-¿Existe una GDT?. Si
+4.b.ii-¿Es utilizada? Si
+
+4.c-Indique el motivo por el cual se utiliza como segmento cs en la linea 65
+Porque la GDT esta en la parte del codigo, y el unico que puede acceder es cs porque tiene los 3 primeros nibbles en 'f'
+
+4.d-Para la linea 72.
+4.d.i-Indique que se modifico.
+se modifico el selector del 'ds' poniendo el límite en 0xffffffff
+4.d.ii-Porque debe realizarse en modo protegido
+para modificar el "registro oculto" de ds
+
+4.d.iii-De donde se obtiene dicho valor.
+los primeros 13 bits definen el indice en la gdt
+
+4.e-En la instruccion correspondiente a la linea 81, indicar la direccion
+4.e.i-Logica	0x0000:0x00001000
+4.e.ii-Lineal	0x0000:0x00001000
+4.e.iii-Fisica	0x00010000
+4.e.iv-¿Que unidad de proteccion interviene?¿Que se esta comparando?
+interviene la unidad de segmentacion de memoria dentro de la MMU (Memory Managment Unit).
+4.e.v-¿Que permite que se pueda ejecutar esta instruccion y no la del item 3.d
+que ahora el limite del segmento 'ds' esta en 0xffffffff

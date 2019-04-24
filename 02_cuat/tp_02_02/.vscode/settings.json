@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "stat.h": "c",
+        "types.h": "c",
+        "wait.h": "c",
+        "i2c_td3.h": "c",
+        "fcntl.h": "c",
+        "signal.h": "c",
+        "basics.h": "c",
+        "thread.h": "c",
+        "my_server.h": "c"
+    }
+}

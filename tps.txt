@@ -21,8 +21,6 @@ make compilar:			compila, linkea, genera txt, etc
 make copyBios:			copia .bin a path del bochs
 make all:				compila (linkea, ...), copia .bin a path del bochs, y ejecuta el bochs
 
-NOTA: modificar la constante PATH_BIOS (primer constante del makefile) para que se copie el .bin generado al path al cual el bochs va a buscarlo
-
 
 
 
@@ -31,9 +29,20 @@ NOTA: modificar la constante PATH_BIOS (primer constante del makefile) para que 
 *		    TP 1		   					*
 *********************************************
 TP01.01: Funciona -> SI       Comentarios: En "Config.txt" explica como configurar la ROM y RAM
-TP01.02: Funciona -> SI       Comentarios: El STACK no funciona en la pos 0x000F_FFFF, en otra si.
-TP01.03: Funciona -> SI       Comentarios: No veo diferencia activando el A20
-TP01.04: Funciona -> NO       Comentarios: Falta terminar
+TP01.02: Funciona -> SI       Comentarios:
+TP01.03: Funciona -> SI       Comentarios:
+TP01.04: Funciona -> SI       Comentarios:
+TP01.05: Funciona -> SI       Comentarios:
+TP01.06: Funciona -> SI       Comentarios:
+TP01.07: Funciona -> SI       Comentarios:
+TP01.08: Funciona -> SI       Comentarios:
+TP01.09: Funciona -> SI       Comentarios:
+TP01.10: Funciona -> SI       Comentarios:
+TP01.11: Funciona -> SI       Comentarios:
+TP01.12: Funciona -> SI       Comentarios:
+TP01.13: Funciona -> SI       Comentarios:
+TP01.14: Funciona -> SI       Comentarios:
+TP01.15: Funciona -> SI       Comentarios:
 
 
 

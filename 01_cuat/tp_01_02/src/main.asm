@@ -45,7 +45,7 @@ CODE_START equ ($)
 
 
 ;********************************************************
-;						DIRECTIVAS							*
+;						DIRECTIVAS						*
 ;********************************************************
 section .text
 use16							; use16: Por default se usa 16-bits encoding para las instrucciones; mientras que para las instrucciones 32-bits encoding los operandos deben ser prefijados (la instruccion ocupa 2 bytes) permitiendo usar registros de 32-bits
@@ -77,7 +77,7 @@ _firmware_shadow:
 		; LLamo a la funcion void *TD3_memcopy(void *destino, const void *origen, unsigned int num_bytes)
 		push dword	(CODE_END - _main) 	; unsigned int num_bytes
 		push dword 	_main 				; const void *origen
-		push dword	0x00000000 			; void *destino
+		push dword	0x0000000 			; void *destino
 		call _TD3_memcopy				; void *TD3_memcopy(void *destino, const void *origen, unsigned int num_bytes)
 		add	 SP, 12						; Borro los 3 argumentos del STACK
 
@@ -91,7 +91,7 @@ _firmware_shadow:
 
 ; Funcion _main
 _main:
-		jmp 0x0000
+		jmp 0x0000:0x00000000
 		jmp _stop
 	MAIN_LEN equ ($ - _main)
 
@@ -122,7 +122,14 @@ _TD3_memcopy:						; void *TD3_memcopy(void *destino, const void *origen, unsign
 		mov		EDI,	EAX			; ES:DI = destino
 		mov		ESI,	[EBP+10]	; DS:SI = origen
 		mov		ECX,	[EBP+14]	; ECX = num_bytes;
-		a32 repnz 	movsb 				; repnz: repite instruccion <CX> veces
+		
+	.LLB0:							; Local Loop Begin
+		mov 	AL, 	[CS:ESI]
+		mov  	[ES:EDI], AL
+		inc 	SI
+		inc  	DI
+		loopnz	.LLB0
+	.LLE0:							; Local Loop End
 									; movsb: [ES:DI++] = [DS:SI++]; // (incrementa despues)
 	.LFE1:							; Termina codigo
 		pop		ECX

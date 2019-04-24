@@ -1,0 +1,1 @@
+dd bs=4M if=bone-debian-9.5-iot-armhf-2018-10-07-4gb.img | pv | sudo dd of=/dev/sdb

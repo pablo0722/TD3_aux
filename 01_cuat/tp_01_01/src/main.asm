@@ -4,6 +4,8 @@
 ; *.lst lista las instrucciones en el formato: fila, direccion, opcode y mnemonico. Se puede leer con: cat *.lst
 
 section .text
+ORG ROM_POS_START
+
 global _start
 
 _start:

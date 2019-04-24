@@ -1,0 +1,21 @@
+{
+    "C_Cpp.intelliSenseEngineFallback": "Enabled",
+    "files.associations": {
+        "module.h": "c",
+        "device.h": "c",
+        "gfp.h": "c",
+        "mmzone.h": "c",
+        "page-flags-layout.h": "c",
+        "errno.h": "c",
+        "init.h": "c",
+        "cdev.h": "c",
+        "semaphore.h": "c",
+        "list.h": "c",
+        "kobject.h": "c",
+        "types.h": "c",
+        "posix_types.h": "c",
+        "stddef.h": "c",
+        "compiler.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "Disabled"
+}

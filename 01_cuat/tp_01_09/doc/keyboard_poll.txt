@@ -1,0 +1,5 @@
+init:
+https://wiki.osdev.org/%228042%22_PS/2_Controller
+
+scan codes:
+https://wiki.osdev.org/PS/2_Keyboard

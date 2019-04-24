@@ -1,0 +1,1 @@
+cmd_/home/pablo/Documentos/TD_III/r5051-Dangelo-Pablo-Rodrigo/02_cuat/tp_02_02/driver_i2c_td3/built-in.o :=  rm -f /home/pablo/Documentos/TD_III/r5051-Dangelo-Pablo-Rodrigo/02_cuat/tp_02_02/driver_i2c_td3/built-in.o; ar rcsD /home/pablo/Documentos/TD_III/r5051-Dangelo-Pablo-Rodrigo/02_cuat/tp_02_02/driver_i2c_td3/built-in.o

@@ -1,0 +1,110 @@
+memorias dinamicas
+	considerar:
+		Pines:
+			pinout, inductancias, capacitancias, etc
+
+		Señalizacion:
+			handshake con el controlador (CPU -> controlador -> memoria dinamica)
+			requiere controlador porque la DRAM se maneja como una matriz, el CPU maneja la memoria como algo lineal.
+
+		Integridad de la señal:
+			en funcion de la frecuencia
+
+		Encapsulado
+		clock y sync
+		
+	south-bridge
+		maneja dispositivos de baja velocidad
+			legacy, mouse teclado
+	
+	north-bridge (es un bus de muy alta velocidad)
+		south-bridge, memoria, GPU, interfaz de red, discos de alta velocidad
+	
+	
+	
+		
+	Por cada bit se requiere un transistor MOS + capacitor
+		requiere refresco periódico
+		
+		word line (fila): gate
+		bit line (columna): drain, source
+		
+		X8 DRAM: con una fila y columna, leo 8 bits (son 8 matrices en paralelo)
+		
+	Para mayor capacidades, se dividen en DIMMs
+	
+	Rango = conjunto de DIMMs (puede ser un DIMM entero o parte de un DIMM)
+		cada rango se organiza en bancos independientes 
+			ej. en un x16 DRAM, puede haber un banco de 8 matrices y otro de 8 matrices
+			Si el tiempo de acceso es de 10 ns y leo 2 bancos con 5ns de demora entre uno y otro, duplico la velocidad
+	
+	Amplificador de sensado
+		precarga bitline con valor entre 0 y 1.
+		Si el C esta cargado o descargado, la tension que entrega el amplificador varía;
+			El amplificador debe poder detectar esa variacion.
+		El refresco se hace leyendo toda la matriz, fila por fila. El push-Pull refresca un bit al leerlo
+		
+	Pasos:
+		precarga
+		
+		acceso
+			convierte direccion fisica a numero de memoria, rango, banco, etc
+		
+		sensado
+			
+			
+		recarga
+
+
+
+
+	Tipos de DRAMs
+		clockeada
+		asincronicas
+		fast page mode: bufferea la informacion de fila. aumenta velocidad al leer varias columnas de una misma fila
+		EDO DRAM (Extended Data Out): 
+		BEDO DRAM (Busted EDO): Lee varias columnas cercanas (principio de vecindad)
+		IBM High Speed Toggle Mode DRAM: lee en ambos flancos
+		SDRAM (syncronica): envia fila y columna en el mismo clock
+		DDR: clockea en ambos flancos
+		
+	Estandares
+		JEDEC
+			bus de addres y comandos
+				addres
+					row y col
+				comandos
+					lectura, escritura, recarga
+			bus de datos
+			chip select
+				selecciona un rango
+			se puede usar un procesador con varios controladores de memoria o varios procesadores a un controlador
+			gracias al controlador de memoria, el procesador se independiza de las características físicas de la DRAM
+			Todas las DRAM tienen modo Burst, con longitud de rafaga configurable
+			Timing
+				added latency
+				burst (duracion del burst de datos)
+				cas (Column Access Strobe)
+				ccd (column to column delay)
+				cmd (Tiempo de transporte de comando)
+				cwd (Column Write Delay)
+				row
+				ras (Row Access Strobe)
+				odt
+				rc
+				rcd
+				rfc
+				rp
+				rrd
+				rtp
+				rtrs
+				wr
+				wtr
+				
+				
+				
+	Beaglebone
+		memorias
+			512 DDR3L
+			4KB EEPROM
+			2GB Embedded MMC

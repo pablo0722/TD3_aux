@@ -1,0 +1,9 @@
+TP1, Ej 3.
+I NICIALIZACIÓN BÁSICA UTILIZANDO SOLO ENSAMBLADOR CON ACCESO A   4GB 
+Activar el mecanismo conocido como A20 GATE para acceder al mapa completo de memoria 
+del procesador en modo real. 
+Adicionalmente agregar el código necesario a fin de que el programa pueda:
+a. Copiarse a si mismo en la dirección 0x00000000 y ejecutarse desde dicha ubicación 
+b. Copiarse a 0x00300000 y finalizar estableciendo al procesador en estado halted en 
+	forma permanente 
+c. Establecer la pila en 0x1FFFB000 

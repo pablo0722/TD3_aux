@@ -60,6 +60,7 @@ CODE_START equ ($)
 ;********************************************************
 section .text
 use16							; use16: Por default se usa 16-bits encoding para las instrucciones; mientras que para las instrucciones 32-bits encoding los operandos deben ser prefijados (la instruccion ocupa 2 bytes) permitiendo usar registros de 32-bits
+;ORG ROM_POS_START
 
 global _start
 
